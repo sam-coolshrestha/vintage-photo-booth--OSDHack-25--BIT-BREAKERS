@@ -1,0 +1,439 @@
+* {
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: repeating-linear-gradient(
+        45deg,
+        #ff69b4,
+        #ff69b4 10px,
+        #ff1493 10px,
+        #ff1493 20px
+    );
+    background-size: 20px 20px;
+    animation: bgScroll 2s linear infinite;
+    margin: 0;
+    padding: 10px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes bgScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 20px; }
+}
+
+#app-container {
+    background: #c0c0c0;
+    border: 4px outset #c0c0c0;
+    width: 95%;
+    max-width: 1000px;
+    padding: 0;
+    position: relative;
+    box-shadow: 8px 8px 0px #808080;
+}
+
+.title-bar {
+    background: linear-gradient(90deg, #0066cc, #0080ff);
+    color: white;
+    padding: 8px 12px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid #333;
+    position: relative;
+}
+
+.title-bar::before {
+    content: "📸";
+    font-size: 12px;
+}
+
+.window-controls {
+    position: absolute;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+}
+
+.window-btn {
+    width: 16px;
+    height: 14px;
+    border: 1px outset #c0c0c0;
+    background: #c0c0c0;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.window-btn:active {
+    border-style: inset;
+}
+
+.main-content {
+    padding: 15px;
+    background: #c0c0c0;
+}
+
+.app-title {
+    font-size: 16px;
+    color: #ff1493;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 0px #000;
+    animation: rainbow 3s ease-in-out infinite alternate;
+}
+
+@keyframes rainbow {
+    0% { color: #ff1493; }
+    25% { color: #00ffff; }
+    50% { color: #ffff00; }
+    75% { color: #ff69b4; }
+    100% { color: #ff1493; }
+}
+
+.layout-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 15px;
+    align-items: start;
+}
+
+.canvas-area {
+    background: #808080;
+    border: 2px inset #c0c0c0;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    height: 100%;
+}
+
+.canvas-title {
+    font-size: 10px;
+    color: #000;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.canvas-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 2px inset #c0c0c0;
+    position: relative;
+    overflow: hidden;
+}
+
+canvas {
+    background: transparent;
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: crisp-edges;
+    object-fit: contain;
+    cursor: default;
+    transition: cursor 0.2s ease;
+}
+
+.controls-panel {
+    background: #c0c0c0;
+    border: 2px inset #c0c0c0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.control-group {
+    background: #e0e0e0;
+    border: 1px inset #c0c0c0;
+    padding: 8px;
+}
+
+.control-title {
+    font-size: 8px;
+    color: #000080;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.file-input-wrapper {
+    position: relative;
+    display: block;
+}
+
+.file-button {
+    background: #ff69b4;
+    color: white;
+    border: 2px outset #ff69b4;
+    padding: 8px 12px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.file-button:active {
+    border-style: inset;
+}
+
+.status-display {
+    font-size: 7px;
+    color: #008000;
+    background: #000;
+    padding: 4px;
+    border: 1px inset #c0c0c0;
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.effects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.effect-btn {
+    background: #00ffff;
+    color: #000;
+    border: 2px outset #00ffff;
+    padding: 6px 4px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: none;
+}
+
+.effect-btn:hover {
+    background: #40ffff;
+}
+
+.effect-btn:active {
+    border-style: inset;
+}
+
+.effect-btn.active {
+    background: #ff69b4;
+    color: #fff;
+}
+
+.reset-btn {
+    background: #ffff00 !important;
+    color: #000 !important;
+    grid-column: 1 / -1;
+}
+
+.sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.sticker-btn {
+    background: #ff69b4;
+    color: #fff;
+    border: 2px outset #ff69b4;
+    padding: 8px 4px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sticker-btn:hover {
+    background: #ff1493;
+}
+
+.sticker-btn:active {
+    border-style: inset;
+}
+
+.sticker-btn.active {
+    background: #ff1493;
+    color: #fff;
+    border-color: #ff1493;
+    box-shadow: 0 0 8px #ff1493;
+}
+
+.frame-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.frame-btn {
+    background: #9370db;
+    color: #fff;
+    border: 2px outset #9370db;
+    padding: 6px 4px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 6px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.frame-btn:hover {
+    background: #8a2be2;
+}
+
+.frame-btn:active {
+    border-style: inset;
+}
+
+.frame-btn.active {
+    background: #ff69b4;
+    color: #fff;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+}
+
+.checkbox-row input[type="checkbox"] {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #000;
+    background: #fff;
+}
+
+.checkbox-row label {
+    font-size: 7px;
+    color: #000;
+    cursor: pointer;
+}
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+}
+
+.slider-row input[type="range"] {
+    flex: 1;
+    height: 8px;
+    background: #808080;
+    border: 1px inset #c0c0c0;
+}
+
+.slider-row label {
+    font-size: 7px;
+    color: #000;
+    min-width: 60px;
+}
+
+.download-section {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.download-btn {
+    background: #00ff00;
+    color: #000;
+    border: 3px outset #00ff00;
+    padding: 10px 15px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    cursor: pointer;
+    width: 100%;
+    animation: blink 1s infinite;
+}
+
+.download-btn:active {
+    border-style: inset;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.7; }
+}
+
+.decorative-stars {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 8px;
+    color: #ffff00;
+    animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.sticker-decoration {
+    position: absolute;
+    font-size: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.sticker-1 { top: 10px; left: 10px; animation-delay: 0s; }
+.sticker-2 { top: 30px; right: 30px; animation-delay: 1s; }
+.sticker-3 { bottom: 40px; left: 20px; animation-delay: 2s; }
+.sticker-4 { bottom: 20px; right: 10px; animation-delay: 0.5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.clear-btn {
+    background: #ff4500 !important;
+    color: #fff !important;
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+    .layout-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .controls-panel {
+        order: -1;
+    }
+    
+    .app-title {
+        font-size: 12px;
+    }
+    
+    .effects-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .sticker-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✧･ﾟ: *✧･ﾟ:* PHOTO BOOTH *:･ﾟ✧*:･ﾟ✧</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app-container">
+        <div class="title-bar">
+            ✧･ﾟ: *✧･ﾟ:* KAWAII PHOTO BOOTH *:･ﾟ✧*:･ﾟ✧
+            <div class="window-controls">
+                <div class="window-btn">_</div>
+                <div class="window-btn">□</div>
+                <div class="window-btn">×</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="decorative-stars">✦ ✧ ✦</div>
+            <div class="sticker-decoration sticker-1">💖</div>
+            <div class="sticker-decoration sticker-2">🌟</div>
+            <div class="sticker-decoration sticker-3">💫</div>
+            <div class="sticker-decoration sticker-4">✨</div>
+            
+            <div class="app-title">
+                ♡ VINTAGE PHOTO EDITOR ♡
+            </div>
+            
+            <div class="layout-container">
+                <div class="canvas-area">
+                    <div class="canvas-title">◆ PREVIEW WINDOW ◆</div>
+                    <div class="canvas-container">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="controls-panel">
+                    <div class="control-group">
+                        <div class="control-title">❤ LOAD IMAGE ❤</div>
+                        <label for="imageLoader" class="file-button">
+                            ◆ BROWSE FILES ◆
+                        </label>
+                        <input type="file" id="imageLoader" accept="image/*" style="display:none;"/>
+                        <div class="status-display" id="uploadStatus">
+                            > NO FILE SELECTED
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-title">★ EFFECTS ★</div>
+                        <div class="effects-grid">
+                            <button class="effect-btn" id="filter90s">90S</button>
+                            <button class="effect-btn" id="filter2k">Y2K</button>
+                            <button class="effect-btn" id="filterPixel">PIXEL</button>
+                            <button class="effect-btn" id="filterSepia">SEPIA</button>
+                            <button class="effect-btn" id="filterNeon">NEON</button>
+                            <button class="effect-btn" id="filterVHS">VHS</button>
+                            <button class="effect-btn" id="filterCyber">CYBER</button>
+                            <button class="effect-btn" id="filterGlitch">GLITCH</button>
+                            <button class="effect-btn" id="filterVaporwave">VAPOR</button>
+                            <button class="effect-btn" id="filterPink">PINK</button>
+                            <button class="effect-btn" id="filterBlue">BLUE</button>
+                            <button class="effect-btn" id="filterGreen">GREEN</button>
+                            <button class="effect-btn" id="filterInvert">INVERT</button>
+                            <button class="effect-btn" id="filterSolarize">SOLAR</button>
+                            <button class="effect-btn" id="filterPosterize">POSTER</button>
+                            <button class="effect-btn" id="filterOil">OIL</button>
+                            <button class="effect-btn reset-btn" id="filterReset">RESET</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-title">🎨 ADJUSTMENTS 🎨</div>
+                        <div class="slider-row">
+                            <label>BRIGHT:</label>
+                            <input type="range" id="brightnessSlider" min="-100" max="100" value="0">
+                        </div>
+                        <div class="slider-row">
+                            <label>CONTRAST:</label>
+                            <input type="range" id="contrastSlider" min="-100" max="100" value="0">
+                        </div>
+                        <div class="slider-row">
+                            <label>SATURATION:</label>
+                            <input type="range" id="saturationSlider" min="-100" max="100" value="0">
+                        </div>
+                        <div class="slider-row">
+                            <label>HUE:</label>
+                            <input type="range" id="hueSlider" min="-180" max="180" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-title">🖼️ FRAMES 🖼️</div>
+                        <div class="frame-grid">
+                            <button class="frame-btn" id="frameNone">NONE</button>
+                            <button class="frame-btn" id="frameKawaii">KAWAII</button>
+                            <button class="frame-btn" id="framePolaroid">POLAR</button>
+                            <button class="frame-btn" id="frameGlitch">GLITCH</button>
+                            <button class="frame-btn" id="frameNeon">NEON</button>
+                            <button class="frame-btn" id="frameVintage">VINTAGE</button>
+                            <button class="frame-btn" id="frameHearts">HEARTS</button>
+                            <button class="frame-btn" id="frameStars">STARS</button>
+                            <button class="frame-btn" id="framePixel">PIXEL</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-title">🌸 STICKERS 🌸</div>
+                        <div class="sticker-grid">
+                            <button class="sticker-btn" data-sticker="💖">💖</button>
+                            <button class="sticker-btn" data-sticker="🌟">🌟</button>
+                            <button class="sticker-btn" data-sticker="✨">✨</button>
+                            <button class="sticker-btn" data-sticker="🌙">🌙</button>
+                            <button class="sticker-btn" data-sticker="🦄">🦄</button>
+                            <button class="sticker-btn" data-sticker="🌈">🌈</button>
+                            <button class="sticker-btn" data-sticker="💫">💫</button>
+                            <button class="sticker-btn" data-sticker="🎀">🎀</button>
+                            <button class="sticker-btn" data-sticker="🌸">🌸</button>
+                            <button class="sticker-btn" data-sticker="🍓">🍓</button>
+                            <button class="sticker-btn" data-sticker="🧸">🧸</button>
+                            <button class="sticker-btn" data-sticker="🎂">🎂</button>
+                            <button class="sticker-btn" data-sticker="🍭">🍭</button>
+                            <button class="sticker-btn" data-sticker="🎪">🎪</button>
+                            <button class="sticker-btn" data-sticker="🎭">🎭</button>
+                            <button class="sticker-btn" data-sticker="🎨">🎨</button>
+                            <button class="sticker-btn" data-sticker="🎵">🎵</button>
+                            <button class="sticker-btn" data-sticker="⭐">⭐</button>
+                            <button class="sticker-btn" data-sticker="💎">💎</button>
+                            <button class="sticker-btn" data-sticker="🌺">🌺</button>
+                        </div>
+                        <button class="effect-btn clear-btn" id="clearStickers">CLEAR ALL</button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-title">♡ EXTRAS ♡</div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="dateStampCheck">
+                            <label for="dateStampCheck">DATE STAMP</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="filmGrainCheck">
+                            <label for="filmGrainCheck">FILM GRAIN</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="vignetteCheck">
+                            <label for="vignetteCheck">VIGNETTE</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="scanLinesCheck">
+                            <label for="scanLinesCheck">SCAN LINES</label>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-title">⚡ SAVE ⚡</div>
+                        <button class="download-btn" id="downloadBtn">
+                            ◆ DOWNLOAD ◆
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
