@@ -420,19 +420,19 @@ canvas {
     .layout-container {
         grid-template-columns: 1fr;
     }
-    
+
     .controls-panel {
         order: -1;
     }
-    
+
     .app-title {
         font-size: 12px;
     }
-    
+
     .effects-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    
+
     .sticker-grid {
         grid-template-columns: repeat(6, 1fr);
     }
