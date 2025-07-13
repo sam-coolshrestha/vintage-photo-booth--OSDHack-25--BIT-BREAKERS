@@ -7,6 +7,9 @@ const filmGrainCheck = document.getElementById('filmGrainCheck');
 const vignetteCheck = document.getElementById('vignetteCheck');
 const scanLinesCheck = document.getElementById('scanLinesCheck');
 const downloadBtn = document.getElementById('downloadBtn');
+const cameraBtn = document.getElementById('cameraBtn');
+const captureBtn = document.getElementById('captureBtn');
+const stopCameraBtn = document.getElementById('stopCameraBtn');
 
 let originalImage = null;
 let currentFilter = null;
@@ -18,6 +21,10 @@ let adjustments = {
     saturation: 0,
     hue: 0
 };
+let videoStream = null;
+let video = null;
+let isCameraActive = false;
+let animationId = null;
 
 // Initialize canvas
 const canvasContainer = document.querySelector('.canvas-container');
@@ -28,14 +35,14 @@ function initializeCanvas() {
     const containerRect = canvasContainer.getBoundingClientRect();
     canvas.width = Math.max(400, containerRect.width - 20);
     canvas.height = Math.max(300, containerRect.height - 20);
-    
+
     ctx.fillStyle = '#ff69b4';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#fff';
     ctx.font = '16px "Press Start 2P"';
     ctx.textAlign = 'center';
-    ctx.fillText('UPLOAD IMAGE', canvas.width/2, canvas.height/2 - 10);
-    ctx.fillText('TO START!', canvas.width/2, canvas.height/2 + 20);
+    ctx.fillText('UPLOAD IMAGE', canvas.width / 2, canvas.height / 2 - 10);
+    ctx.fillText('TO START!', canvas.width / 2, canvas.height / 2 + 20);
 }
 
 // Initialize canvas on load and resize
@@ -96,7 +103,9 @@ const clearStickersBtn = document.getElementById('clearStickers');
 imageLoader.addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
-    
+
+    stopCamera(); // Stop camera if active
+
     const reader = new FileReader();
     reader.onload = event => {
         const img = new Image();
@@ -111,78 +120,167 @@ imageLoader.addEventListener('change', e => {
     reader.readAsDataURL(file);
 });
 
-// Add filter event listeners
-Object.entries(filters).forEach(([filterName, button]) => {
-    button.addEventListener('click', () => {
-        if (filterName === 'reset') {
-            currentFilter = null;
-            adjustments = { brightness: 0, contrast: 0, saturation: 0, hue: 0 };
-            brightnessSlider.value = 0;
-            contrastSlider.value = 0;
-            saturationSlider.value = 0;
-            hueSlider.value = 0;
-            document.querySelectorAll('.effect-btn').forEach(btn => btn.classList.remove('active'));
-        } else {
-            currentFilter = filterName;
-            document.querySelectorAll('.effect-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-        }
-        if (originalImage) drawImage(originalImage);
-    });
-});
-
-// Add frame event listeners
-Object.entries(frameButtons).forEach(([frameName, button]) => {
-    button.addEventListener('click', () => {
-        currentFrame = frameName;
-        document.querySelectorAll('.frame-btn').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        if (originalImage) drawImage(originalImage);
-    });
-});
-
-// Add sticker event listeners
-let stickerMode = false;
-let selectedSticker = null;
-
-stickerButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        selectedSticker = button.dataset.sticker;
-        stickerMode = true;
-        canvas.style.cursor = 'crosshair';
-        
-        // Visual feedback
-        document.querySelectorAll('.sticker-btn').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        
-        // Show instruction
-        uploadStatus.innerHTML = `> CLICK ON IMAGE TO PLACE ${selectedSticker}`;
+// Camera functionality
+cameraBtn.addEventListener('click', async () => {
+    try {
+        uploadStatus.innerHTML = '> REQUESTING CAMERA ACCESS...';
         uploadStatus.style.color = '#ffff00';
-    });
+
+        videoStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: 'user',
+                width: {
+                    ideal: 1280
+                },
+                height: {
+                    ideal: 720
+                }
+            }
+        });
+
+        video = document.createElement('video');
+        video.srcObject = videoStream;
+        video.autoplay = true;
+        video.playsInline = true;
+
+        video.onloadedmetadata = () => {
+            isCameraActive = true;
+            originalImage = null; // Clear any existing image
+
+            // Show camera controls
+            cameraBtn.style.display = 'none';
+            captureBtn.style.display = 'block';
+            stopCameraBtn.style.display = 'block';
+
+            uploadStatus.innerHTML = '> CAMERA ACTIVE - LIVE PREVIEW';
+            uploadStatus.style.color = '#00ff00';
+
+            // Start live preview
+            startLivePreview();
+        };
+
+    } catch (error) {
+        console.error('Camera access denied:', error);
+        uploadStatus.innerHTML = '> CAMERA ACCESS DENIED';
+        uploadStatus.style.color = '#ff0000';
+
+        // Show fallback message
+        setTimeout(() => {
+            uploadStatus.innerHTML = '> TRY ALLOWING CAMERA PERMISSION';
+            uploadStatus.style.color = '#ff0000';
+        }, 2000);
+    }
 });
 
-// Canvas click handler for sticker placement
-canvas.addEventListener('click', (e) => {
-    if (!stickerMode || !selectedSticker || !originalImage) return;
-    
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Scale coordinates to canvas size
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const canvasX = x * scaleX;
-    const canvasY = y * scaleY;
-    
-    const size = 20 + Math.random() * 20;
-    appliedStickers.push({ sticker: selectedSticker, x: canvasX, y: canvasY, size });
-    drawImage(originalImage);
+// Capture photo from camera
+captureBtn.addEventListener('click', () => {
+    if (!video || !isCameraActive) return;
+
+    // Create a temporary canvas to capture the video frame
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+
+    tempCanvas.width = video.videoWidth;
+    tempCanvas.height = video.videoHeight;
+    tempCtx.drawImage(video, 0, 0);
+
+    // Convert to image
+    const img = new Image();
+    img.onload = () => {
+        originalImage = img;
+        stopCamera(); // Stop the camera after capture
+
+        uploadStatus.innerHTML = '> PHOTO CAPTURED!';
+        uploadStatus.style.color = '#00ff00';
+
+        // Draw the captured image with current effects
+        drawImage(img);
+    };
+    img.src = tempCanvas.toDataURL();
 });
 
-// Exit sticker mode when clicking elsewhere
-document.addEventListener('click', (e) => {
-    if (!canvas.contains(e.target) && !e.target.classList.contains('sticker-btn')) {
-        stickerMode = false;
-        selectedSticker = null;
-        
+// Stop camera
+stopCameraBtn.addEventListener('click', () => {
+    stopCamera();
+});
+
+function startLivePreview() {
+    if (!isCameraActive || !video) return;
+
+    // Get container dimensions
+    const containerRect = canvasContainer.getBoundingClientRect();
+    const containerWidth = containerRect.width - 20;
+    const containerHeight = containerRect.height - 20;
+
+    // Set canvas size based on video dimensions
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+
+    if (videoWidth && videoHeight) {
+        const aspectRatio = videoWidth / videoHeight;
+        const containerRatio = containerWidth / containerHeight;
+
+        if (aspectRatio > containerRatio) {
+            canvas.width = containerWidth;
+            canvas.height = containerWidth / aspectRatio;
+        } else {
+            canvas.height = containerHeight;
+            canvas.width = containerHeight * aspectRatio;
+        }
+    } else {
+        canvas.width = containerWidth;
+        canvas.height = containerHeight;
+    }
+
+    function drawLivePreview() {
+        if (!isCameraActive || !video) return;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw video frame
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Apply current filter to live preview
+        if (currentFilter) {
+            applyColorFilter(currentFilter);
+        }
+
+        // Apply adjustments
+        applyAdjustments();
+
+        // Add frame
+        if (currentFrame !== 'none') {
+            addFrame(currentFrame);
+        }
+
+        // Add stickers
+        appliedStickers.forEach(sticker => {
+            addSticker(sticker.sticker, sticker.x, sticker.y, sticker.size);
+        });
+
+        // Add extras
+        if (filmGrainCheck.checked) {
+            addFilmGrain();
+        }
+
+        if (vignetteCheck.checked) {
+            addVignette();
+        }
+
+        if (scanLinesCheck.checked) {
+            addScanLines();
+        }
+
+        // Add date stamp if checked
+        if (dateStampCheck.checked) {
+            addDateStamp();
+        }
+
+        // Continue the animation loop
+        animationId = requestAnimationFrame(drawLivePreview);
+    }
+    
+    // Start the drawing loop
+    drawLivePreview();
+}
