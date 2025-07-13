@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app-container">
@@ -19,18 +19,18 @@
                 <div class="window-btn">×</div>
             </div>
         </div>
-        
+
         <div class="main-content">
             <div class="decorative-stars">✦ ✧ ✦</div>
             <div class="sticker-decoration sticker-1">💖</div>
             <div class="sticker-decoration sticker-2">🌟</div>
             <div class="sticker-decoration sticker-3">💫</div>
             <div class="sticker-decoration sticker-4">✨</div>
-            
+
             <div class="app-title">
                 ♡ VINTAGE PHOTO EDITOR ♡
             </div>
-            
+
             <div class="layout-container">
                 <div class="canvas-area">
                     <div class="canvas-title">◆ PREVIEW WINDOW ◆</div>
@@ -38,7 +38,7 @@
                         <canvas id="canvas"></canvas>
                     </div>
                 </div>
-                
+
                 <div class="controls-panel">
                     <div class="control-group">
                         <div class="control-title">❤ LOAD IMAGE ❤</div>
@@ -46,11 +46,20 @@
                             ◆ BROWSE FILES ◆
                         </label>
                         <input type="file" id="imageLoader" accept="image/*" style="display:none;"/>
+                        <button class="file-button" id="cameraBtn">
+                            📸 LIVE CAMERA 📸
+                        </button>
+                        <button class="file-button" id="captureBtn" style="display:none; background:#00ff00; color:#000;">
+                            ⚡ CAPTURE PHOTO ⚡
+                        </button>
+                        <button class="file-button" id="stopCameraBtn" style="display:none; background:#ff4500; color:#fff;">
+                            ⏹️ STOP CAMERA ⏹️
+                        </button>
                         <div class="status-display" id="uploadStatus">
                             > NO FILE SELECTED
                         </div>
                     </div>
-                    
+
                     <div class="control-group">
                         <div class="control-title">★ EFFECTS ★</div>
                         <div class="effects-grid">
@@ -73,7 +82,7 @@
                             <button class="effect-btn reset-btn" id="filterReset">RESET</button>
                         </div>
                     </div>
-                    
+
                     <div class="control-group">
                         <div class="control-title">🎨 ADJUSTMENTS 🎨</div>
                         <div class="slider-row">
@@ -93,7 +102,7 @@
                             <input type="range" id="hueSlider" min="-180" max="180" value="0">
                         </div>
                     </div>
-                    
+
                     <div class="control-group">
                         <div class="control-title">🖼️ FRAMES 🖼️</div>
                         <div class="frame-grid">
@@ -108,7 +117,7 @@
                             <button class="frame-btn" id="framePixel">PIXEL</button>
                         </div>
                     </div>
-                    
+
                     <div class="control-group">
                         <div class="control-title">🌸 STICKERS 🌸</div>
                         <div class="sticker-grid">
@@ -135,7 +144,7 @@
                         </div>
                         <button class="effect-btn clear-btn" id="clearStickers">CLEAR ALL</button>
                     </div>
-                    
+
                     <div class="control-group">
                         <div class="control-title">♡ EXTRAS ♡</div>
                         <div class="checkbox-row">
@@ -155,7 +164,7 @@
                             <label for="scanLinesCheck">SCAN LINES</label>
                         </div>
                     </div>
-                    
+
                     <div class="control-group">
                         <div class="control-title">⚡ SAVE ⚡</div>
                         <button class="download-btn" id="downloadBtn">
