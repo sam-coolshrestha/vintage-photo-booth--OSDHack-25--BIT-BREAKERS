@@ -1,4 +1,4 @@
-# 💖 KAWAII PHOTO BOOTH / VINTAGE PHOTO EDITOR 🎀
+#  KAWAII PHOTO BOOTH / VINTAGE PHOTO EDITOR 🎀
 
 A fully frontend-based, retro-themed photo editing web application inspired by the charm of early 2000s aesthetics. This project combines the visual style of vintage photo booths with modern browser capabilities like webcam access and real-time image manipulation. Built entirely with HTML, CSS, and JavaScript, and served locally using Python’s built-in HTTP server.
 
