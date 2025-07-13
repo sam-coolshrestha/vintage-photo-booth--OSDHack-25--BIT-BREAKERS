@@ -1,5 +1,5 @@
 #  KAWAII PHOTO BOOTH / VINTAGE PHOTO EDITOR 🎀
-
+# Use this link to access - https://sam-coolshrestha.github.io/vintage-photo-booth--OSDHack-25--BIT-BREAKERS/
 A fully frontend-based, retro-themed photo editing web application inspired by the charm of early 2000s aesthetics. This project combines the visual style of vintage photo booths with modern browser capabilities like webcam access and real-time image manipulation. Built entirely with HTML, CSS, and JavaScript, and served locally using Python’s built-in HTTP server.
 
 ## 🌟 PROJECT OVERVIEW
